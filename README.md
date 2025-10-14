@@ -52,7 +52,7 @@ php artisan vendor:publish --tag="statamic-yourstoryz-views"
 ## Usage
 
 ```php
-$statamicYourstoryz = new YourStoryz\StatamicYourstoryz();
+$statamicYourstoryz = new YourStoryz\StatamicYourStoryz();
 echo $statamicYourstoryz->echoPhrase('Hello, YourStoryz!');
 ```
 

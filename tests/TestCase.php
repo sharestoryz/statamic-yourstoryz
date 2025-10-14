@@ -1,10 +1,10 @@
 <?php
 
-namespace YourStoryz\StatamicYourstoryz\Tests;
+namespace YourStoryz\StatamicYourStoryz\Tests;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
-use YourStoryz\StatamicYourstoryz\StatamicYourstoryzServiceProvider;
+use YourStoryz\StatamicYourStoryz\ServiceProvider;
 
 class TestCase extends Orchestra
 {
@@ -13,14 +13,14 @@ class TestCase extends Orchestra
         parent::setUp();
 
         Factory::guessFactoryNamesUsing(
-            fn (string $modelName) => 'YourStoryz\\StatamicYourstoryz\\Database\\Factories\\'.class_basename($modelName).'Factory'
+            fn (string $modelName) => 'YourStoryz\\StatamicYourStoryz\\Database\\Factories\\'.class_basename($modelName).'Factory'
         );
     }
 
     protected function getPackageProviders($app)
     {
         return [
-            StatamicYourstoryzServiceProvider::class,
+            ServiceProvider::class,
         ];
     }
 

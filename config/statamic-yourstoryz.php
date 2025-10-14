@@ -1,6 +1,6 @@
 <?php
 
-// config for YourStoryz/StatamicYourstoryz
+// config for YourStoryz/StatamicYourStoryz
 return [
 
 ];
