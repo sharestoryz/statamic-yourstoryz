@@ -2,8 +2,8 @@
 
 namespace YourStoryz\StatamicYourStoryz;
 
-use Statamic\Providers\AddonServiceProvider;
 use Statamic\Facades\CP\Nav;
+use Statamic\Providers\AddonServiceProvider;
 
 class ServiceProvider extends AddonServiceProvider
 {
