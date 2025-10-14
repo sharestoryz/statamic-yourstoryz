@@ -1,0 +1,13 @@
+tabs:
+  credentials:
+    display: 'Credentials'
+    sections:
+      -
+        fields:
+          -
+            handle: api_key
+            field:
+              display: 'API Key'
+              type: text
+              validate:
+                - required

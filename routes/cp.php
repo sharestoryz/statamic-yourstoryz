@@ -1,6 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use YourStoryz\StatamicYourstoryz\Http\Controllers\SettingsController;
+use YourStoryz\StatamicYourStoryz\Http\Controllers\SettingsController;
 
-Route::get('yourstoryz', [SettingsController::class, 'index']);
+Route::prefix('yourstoryz')->name('yourstoryz.')->group(function () {
+    Route::redirect('', '/cp/yourstoryz/settings/edit')->name('index');
+    Route::singleton('settings', SettingsController::class)
+        ->except('show');
+});

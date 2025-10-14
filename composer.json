@@ -17,6 +17,7 @@
     ],
     "require": {
         "php": "^8.3",
+        "edalzell/forma": "^3.1",
         "illuminate/contracts": "^11.0||^12.0",
         "statamic/cms": "^5.66"
     },

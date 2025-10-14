@@ -1,0 +1,10 @@
+title: YourStoryz Settings
+fields:
+  api_token:
+    display: API Access Token
+    type: text
+    input_type: password
+    instructions: Enter the API token provided by the external service. This token is saved securely.
+    required: true
+    validate: 'required|min:16'
+    width: 100
