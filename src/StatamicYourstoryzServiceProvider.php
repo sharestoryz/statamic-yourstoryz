@@ -4,7 +4,6 @@ namespace YourStoryz\StatamicYourstoryz;
 
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use YourStoryz\StatamicYourstoryz\Commands\StatamicYourstoryzCommand;
 
 class StatamicYourstoryzServiceProvider extends PackageServiceProvider
 {
