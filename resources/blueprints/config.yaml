@@ -6,7 +6,7 @@ tabs:
       -
         fields:
           -
-            handle: storiable
+            handle: storiable_type
             field:
               options:
                 -
@@ -18,11 +18,11 @@ tabs:
               inline: true
               type: radio
               display: Storiable
-              instructions: 'Please select which type of storiable you want to connect to.'
+              instructions: 'Please select which type of storiable type you want to connect to.'
               validate:
                 - required
           -
-            handle: company
+            handle: company_id
             field:
               max_items: 1
               mode: select
@@ -30,11 +30,11 @@ tabs:
               display: Company
               instructions: 'Please select a company'
               if:
-                storiable: 'equals company'
+                storiable_type: 'equals company'
               validate:
-                - 'required_if:storiable,company'
+                - 'required_if:storiable_type,company'
           -
-            handle: department
+            handle: department_id
             field:
               max_items: 1
               mode: select
@@ -42,6 +42,6 @@ tabs:
               display: Department
               instructions: 'Please select a department'
               if:
-                storiable: 'equals department'
+                storiable_type: 'equals department'
               validate:
-                - 'required_if:storiable,department'
+                - 'required_if:storiable_type,department'

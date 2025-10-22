@@ -12,23 +12,27 @@ class GetStoriesJob implements ShouldQueue
 {
     use Queueable;
 
-    private string $storiable_type;
+    private ?string $storiable_type;
 
-    private int $storiable_id;
+    private ?int $storiable_id;
 
     public function __construct()
     {
         $data = YAML::file(base_path('content/yourstoryz.yaml'))->parse();
 
-        $this->storiable_type = $data['storiable'];
-        $this->storiable_id = match ($data['storiable']) {
-            'company' => $data['company'],
-            'department' => $data['department'],
-        };
+        $this->storiable_type = $data['storiable_type'] ?? null;
+        $this->storiable_id = isset($data['storiable_type']) ? match ($data['storiable_type']) {
+            'company' => $data['company_id'] ?? null,
+            'department' => $data['department_id'] ?? null,
+        } : null;
     }
 
     public function handle(YourStoryz $yourstoryz): void
     {
+        if(empty($this->storiable_type) || empty($this->storiable_id)) {
+            return;
+        }
+
         $response = match ($this->storiable_type) {
             'user' => $yourstoryz->users()->stories($this->storiable_id),
             'company' => $yourstoryz->companies()->stories($this->storiable_id),
