@@ -34,7 +34,7 @@ class ServiceProvider extends AddonServiceProvider
     protected function schedule(Schedule $schedule): void
     {
         $schedule
-            ->job(new GetStoriesJob('company', 1))
+            ->job(new GetStoriesJob)
             ->everyFifteenMinutes();
     }
 

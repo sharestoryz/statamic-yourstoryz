@@ -1,0 +1,49 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Call to an undefined static method Statamic\\Facades\\File\:\:put\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: src/Http/Controllers/ConfigController.php
+
+		-
+			message: '#^Parameter \#1 \$view of function view expects view\-string\|null, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Http/Controllers/ConfigController.php
+
+		-
+			message: '#^Call to an undefined method Statamic\\Contracts\\Entries\\QueryBuilder\:\:where\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Jobs/GetStoriesJob.php
+
+		-
+			message: '#^Match expression does not handle remaining value\: mixed$#'
+			identifier: match.unhandled
+			count: 1
+			path: src/Jobs/GetStoriesJob.php
+
+		-
+			message: '#^Match expression does not handle remaining value\: string$#'
+			identifier: match.unhandled
+			count: 1
+			path: src/Jobs/GetStoriesJob.php
+
+		-
+			message: '#^Call to an undefined method Statamic\\Contracts\\Assets\\AssetContainer\:\:path\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Jobs/ProcessMediaJob.php
+
+		-
+			message: '#^Call to an undefined method Statamic\\Contracts\\Entries\\QueryBuilder\:\:where\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Jobs/ProcessMediaJob.php
+
+		-
+			message: '#^Call to an undefined method Statamic\\Contracts\\Entries\\Entry\:\:collection\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Jobs/ProcessStoryJob.php
