@@ -5,16 +5,27 @@ namespace YourStoryz\StatamicYourStoryz\Jobs;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Statamic\Facades\Entry;
+use Statamic\Facades\YAML;
 use YourStoryz\PhpSdk\YourStoryz;
 
 class GetStoriesJob implements ShouldQueue
 {
     use Queueable;
 
-    public function __construct(
-        private string $storiable_type,
-        private int $storiable_id,
-    ) {}
+    private string $storiable_type;
+
+    private int $storiable_id;
+
+    public function __construct()
+    {
+        $data = YAML::file(base_path('content/yourstoryz.yaml'))->parse();
+
+        $this->storiable_type = $data['storiable'];
+        $this->storiable_id = match ($data['storiable']) {
+            'company' => $data['company'],
+            'department' => $data['department'],
+        };
+    }
 
     public function handle(YourStoryz $yourstoryz): void
     {

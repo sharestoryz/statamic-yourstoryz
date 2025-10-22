@@ -1,0 +1,47 @@
+title: Config
+tabs:
+  main:
+    display: Main
+    sections:
+      -
+        fields:
+          -
+            handle: storiable
+            field:
+              options:
+                -
+                  key: company
+                  value: Company
+                -
+                  key: department
+                  value: Department
+              inline: true
+              type: radio
+              display: Storiable
+              instructions: 'Please select which type of storiable you want to connect to.'
+              validate:
+                - required
+          -
+            handle: company
+            field:
+              max_items: 1
+              mode: select
+              type: yourstoryz_company
+              display: Company
+              instructions: 'Please select a company'
+              if:
+                storiable: 'equals company'
+              validate:
+                - 'required_if:storiable,company'
+          -
+            handle: department
+            field:
+              max_items: 1
+              mode: select
+              type: yourstoryz_department
+              display: Department
+              instructions: 'Please select a department'
+              if:
+                storiable: 'equals department'
+              validate:
+                - 'required_if:storiable,department'

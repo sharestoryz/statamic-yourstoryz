@@ -5,13 +5,17 @@ namespace YourStoryz\StatamicYourStoryz;
 use Illuminate\Console\Scheduling\Schedule;
 use Statamic\Facades\Blueprint;
 use Statamic\Facades\Collection;
+use Statamic\Facades\CP\Nav;
 use Statamic\Facades\Site;
 use Statamic\Providers\AddonServiceProvider;
 use YourStoryz\StatamicYourStoryz\Jobs\GetStoriesJob;
 
 class ServiceProvider extends AddonServiceProvider
 {
-    protected $viewNamespace = 'yourstoryz';
+    protected $fieldtypes = [
+        \YourStoryz\StatamicYourStoryz\Fieldtypes\YourStoryzCompany::class,
+        \YourStoryz\StatamicYourStoryz\Fieldtypes\YourStoryzDepartment::class,
+    ];
 
     public function bootAddon(): void
     {
@@ -19,7 +23,17 @@ class ServiceProvider extends AddonServiceProvider
             ->createCollection()
             ->createBlueprint();
 
-        $this->app->make(Schedule::class)
+        Nav::extend(function ($nav) {
+            $nav->content('YourStoryz')
+                ->section('Tools')
+                ->route('yourstoryz.edit')
+                ->icon('shopping-cart');
+        });
+    }
+
+    protected function schedule(Schedule $schedule): void
+    {
+        $schedule
             ->job(new GetStoriesJob('company', 1))
             ->everyFifteenMinutes();
     }
