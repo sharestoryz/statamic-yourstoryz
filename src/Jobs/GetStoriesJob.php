@@ -29,7 +29,7 @@ class GetStoriesJob implements ShouldQueue
 
     public function handle(YourStoryz $yourstoryz): void
     {
-        if(empty($this->storiable_type) || empty($this->storiable_id)) {
+        if (empty($this->storiable_type) || empty($this->storiable_id)) {
             return;
         }
 
