@@ -4,6 +4,7 @@ namespace YourStoryz\StatamicYourStoryz\Fieldtypes;
 
 use Statamic\Fieldtypes\Relationship;
 use YourStoryz\LaravelYourStoryz\Facades\YourStoryz;
+use Statamic\CP\Column;
 
 class YourStoryzDepartment extends Relationship
 {
@@ -18,7 +19,9 @@ class YourStoryzDepartment extends Relationship
             ->all()
             ->collect()
             ->map(fn ($item) => [
-                'id' => $item['id'], 'title' => $item['name'],
+                'id' => $item['id'],
+                'title' => $item['name'],
+                'company' => $item['company']['name']
             ])
             ->toArray();
     }
@@ -34,6 +37,14 @@ class YourStoryzDepartment extends Relationship
         return [
             'id' => $item['id'],
             'title' => $item['name'],
+        ];
+    }
+
+    protected function getColumns()
+    {
+        return [
+            Column::make('title'),
+            Column::make('company'),
         ];
     }
 }

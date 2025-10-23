@@ -21,10 +21,7 @@ class GetStoriesJob implements ShouldQueue
         $data = YAML::file(base_path('content/yourstoryz.yaml'))->parse();
 
         $this->storiable_type = $data['storiable_type'] ?? null;
-        $this->storiable_id = isset($data['storiable_type']) ? match ($data['storiable_type']) {
-            'company' => $data['company_id'] ?? null,
-            'department' => $data['department_id'] ?? null,
-        } : null;
+        $this->storiable_id = $data['storiable_id'] ?? null;
     }
 
     public function handle(YourStoryz $yourstoryz): void

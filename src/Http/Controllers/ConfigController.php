@@ -14,11 +14,14 @@ class ConfigController extends Controller
     {
         $data = YAML::file(base_path('content/yourstoryz.yaml'))->parse();
 
+        $config['storiable_type'] = $data['storiable_type'];
+        $config[$data['storiable_type'] . '_id'] = $data['storiable_id'];
+
         $blueprint = $this->getBlueprint();
 
         $fields = $blueprint
             ->fields()
-            ->addValues($data)
+            ->addValues($config)
             ->preProcess();
 
         return view('statamic-yourstoryz::settings.edit', [
@@ -38,7 +41,13 @@ class ConfigController extends Controller
 
         $data = $fields->process()->values()->toArray();
 
-        File::put(base_path('content/yourstoryz.yaml'), YAML::dump($data));
+        $config['storiable_type'] = $data['storiable_type'];
+        $config['storiable_id'] = match($data['storiable_type']) {
+            'company' => $data['company_id'],
+            'department' => $data['department_id'],
+        };
+
+        File::put(base_path('content/yourstoryz.yaml'), YAML::dump($config));
     }
 
     private function getBlueprint()
