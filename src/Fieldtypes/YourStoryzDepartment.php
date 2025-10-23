@@ -2,9 +2,9 @@
 
 namespace YourStoryz\StatamicYourStoryz\Fieldtypes;
 
+use Statamic\CP\Column;
 use Statamic\Fieldtypes\Relationship;
 use YourStoryz\LaravelYourStoryz\Facades\YourStoryz;
-use Statamic\CP\Column;
 
 class YourStoryzDepartment extends Relationship
 {
@@ -21,7 +21,7 @@ class YourStoryzDepartment extends Relationship
             ->map(fn ($item) => [
                 'id' => $item['id'],
                 'title' => $item['name'],
-                'company' => $item['company']['name']
+                'company' => $item['company']['name'],
             ])
             ->toArray();
     }
