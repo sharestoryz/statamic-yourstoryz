@@ -36,16 +36,18 @@ class GetStoriesJob implements ShouldQueue
             'department' => $yourstoryz->departments()->stories($this->storiable_id),
         };
 
-        $response->collect()->each(function ($story) {
+        $response->collect()
+            ->filter(fn ($story) => filled($story['video']))
+            ->each(function ($story) {
+                if (Entry::query()
+                    ->where('collection', 'stories')
+                    ->where('reference_id', $story['id'])
+                    ->exists()) {
 
-            if (Entry::query()
-                ->where('collection', 'stories')
-                ->where('reference_id', $story['id'])
-                ->exists()) {
-                return;
-            }
+                    return;
+                }
 
-            GetStoryJob::dispatch($story['id']);
-        });
+                GetStoryJob::dispatch($story['id']);
+            });
     }
 }

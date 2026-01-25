@@ -22,8 +22,6 @@ class ConfigController extends Controller
         $config['storiable_type'] = $data['storiable_type'];
         $config[$data['storiable_type'].'_id'] = $data['storiable_id'];
 
-        $config['include_departments'] = $data['include_departments'];
-
         $blueprint = $this->getBlueprint();
 
         $fields = $blueprint
