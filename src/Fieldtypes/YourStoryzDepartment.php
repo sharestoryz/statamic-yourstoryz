@@ -8,6 +8,8 @@ use YourStoryz\LaravelYourStoryz\Facades\YourStoryz;
 
 class YourStoryzDepartment extends Relationship
 {
+    protected $canCreate = false;
+
     public static function handle()
     {
         return 'yourstoryz_department';

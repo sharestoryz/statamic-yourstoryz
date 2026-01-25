@@ -10,12 +10,19 @@ use Statamic\Facades\YAML;
 
 class ConfigController extends Controller
 {
+    protected array $defaults = [
+        'storiable_type' => null,
+        'storiable_id' => null,
+    ];
+
     public function edit()
     {
-        $data = YAML::file(base_path('content/yourstoryz.yaml'))->parse();
+        $data = YAML::file(base_path('content/yourstoryz.yaml'))->parse() ?: $this->defaults;
 
         $config['storiable_type'] = $data['storiable_type'];
         $config[$data['storiable_type'].'_id'] = $data['storiable_id'];
+
+        $config['include_departments'] = $data['include_departments'];
 
         $blueprint = $this->getBlueprint();
 
@@ -39,12 +46,12 @@ class ConfigController extends Controller
 
         $fields->validate();
 
-        $data = $fields->process()->values()->toArray();
+        $values = $fields->process()->values();
 
-        $config['storiable_type'] = $data['storiable_type'];
-        $config['storiable_id'] = match ($data['storiable_type']) {
-            'company' => $data['company_id'],
-            'department' => $data['department_id'],
+        $config['storiable_type'] = $values['storiable_type'];
+        $config['storiable_id'] = match ($values['storiable_type']) {
+            'company' => $values['company_id'],
+            'department' => $values['department_id'],
         };
 
         File::put(base_path('content/yourstoryz.yaml'), YAML::dump($config));
