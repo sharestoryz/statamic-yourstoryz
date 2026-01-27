@@ -4,7 +4,9 @@ namespace YourStoryz\StatamicYourStoryz\Jobs;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Support\Str;
 use Statamic\Facades\Entry;
+use Statamic\Facades\Term;
 use Statamic\Facades\YAML;
 use YourStoryz\PhpSdk\YourStoryz;
 
@@ -16,12 +18,15 @@ class GetStoriesJob implements ShouldQueue
 
     private ?int $storiable_id;
 
+    private bool $include_departments;
+
     public function __construct()
     {
         $data = YAML::file(base_path('content/yourstoryz.yaml'))->parse();
 
         $this->storiable_type = $data['storiable_type'] ?? null;
         $this->storiable_id = $data['storiable_id'] ?? null;
+        $this->include_departments = $data['include_departments'] ?? false;
     }
 
     public function handle(YourStoryz $yourstoryz): void
@@ -38,16 +43,45 @@ class GetStoriesJob implements ShouldQueue
 
         $response->collect()
             ->filter(fn ($story) => filled($story['video']))
-            ->each(function ($story) {
-                if (Entry::query()
-                    ->where('collection', 'stories')
-                    ->where('reference_id', $story['id'])
-                    ->exists()) {
+            ->filter(fn (array $story) => ! Entry::query()
+                ->where('collection', 'stories')
+                ->where('reference_id', $story['id'])
+                ->exists())
+            ->each(fn (array $story) => GetStoryJob::dispatch($story['id']));
 
+        if ($this->storiable_type === 'company' && $this->include_departments) {
+            $departments = $yourstoryz
+                ->companies()
+                ->departments($this->storiable_id)
+                ->collect();
+
+            $departments->each(function ($department) use ($yourstoryz) {
+                $stories = $yourstoryz->departments()
+                    ->stories($department['id'])
+                    ->collect()
+                    ->filter(fn ($story) => filled($story['video']));
+
+                if ($stories->isEmpty()) {
                     return;
                 }
 
-                GetStoryJob::dispatch($story['id']);
+                $category_slug = Str::slug($department['name']);
+
+                Term::make()
+                    ->taxonomy('categories')
+                    ->slug($category_slug)
+                    ->dataForLocale('default', [
+                        'title' => $department['name'],
+                    ])
+                    ->save();
+
+                $stories
+                    ->filter(fn (array $story) => ! Entry::query()
+                        ->where('collection', 'stories')
+                        ->where('reference_id', $story['id'])
+                        ->exists())
+                    ->each(fn (array $story) => GetStoryJob::dispatch($story['id'], ['categories' => [$category_slug]]));
             });
+        }
     }
 }

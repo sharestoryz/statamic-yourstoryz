@@ -45,3 +45,12 @@ tabs:
                 storiable_type: 'equals department'
               validate:
                 - 'required_if:storiable_type,department'
+          -
+            handle: include_departments
+            field:
+              type: toggle
+              display: 'Include departments stories'
+              instructions: 'Include stories of the departments associated with this company.'
+              if:
+                storiable_type: 'equals company'
+              always_save: true

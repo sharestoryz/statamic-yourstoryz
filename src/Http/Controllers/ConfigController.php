@@ -13,6 +13,7 @@ class ConfigController extends Controller
     protected array $defaults = [
         'storiable_type' => null,
         'storiable_id' => null,
+        'include_departments' => null,
     ];
 
     public function edit()
@@ -21,6 +22,7 @@ class ConfigController extends Controller
 
         $config['storiable_type'] = $data['storiable_type'];
         $config[$data['storiable_type'].'_id'] = $data['storiable_id'];
+        $config['include_departments'] = $data['include_departments'];
 
         $blueprint = $this->getBlueprint();
 
@@ -51,6 +53,7 @@ class ConfigController extends Controller
             'company' => $values['company_id'],
             'department' => $values['department_id'],
         };
+        $config['include_departments'] = $values['include_departments'];
 
         File::put(base_path('content/yourstoryz.yaml'), YAML::dump($config));
     }

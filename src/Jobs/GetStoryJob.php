@@ -13,6 +13,7 @@ class GetStoryJob implements ShouldQueue
 
     public function __construct(
         private int $story_id,
+        private array $data = []
     ) {
         //
     }
@@ -23,19 +24,19 @@ class GetStoryJob implements ShouldQueue
             ->stories()
             ->get($this->story_id);
 
-        $data = $response->json();
+        $story = $response->json();
 
         Bus::chain([
-            new ProcessStoryJob($data),
+            new ProcessStoryJob($story, $this->data),
             new ProcessMediaJob(
-                reference_id: $data['id'],
+                reference_id: $story['id'],
                 attribute: 'thumbnail',
-                media_url: $data['video']['thumbnail_url']
+                media_url: $story['video']['thumbnail_url']
             ),
             new ProcessMediaJob(
-                reference_id: $data['id'],
+                reference_id: $story['id'],
                 attribute: 'video',
-                media_url: $data['video']['video_url']
+                media_url: $story['video']['video_url']
             ),
         ])->dispatch();
     }
