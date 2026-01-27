@@ -39,6 +39,7 @@ class GetStoriesJob implements ShouldQueue
             'user' => $yourstoryz->users()->stories($this->storiable_id),
             'company' => $yourstoryz->companies()->stories($this->storiable_id),
             'department' => $yourstoryz->departments()->stories($this->storiable_id),
+            default => [],
         };
 
         $response->collect()

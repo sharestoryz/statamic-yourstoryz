@@ -52,6 +52,7 @@ class ConfigController extends Controller
         $config['storiable_id'] = match ($values['storiable_type']) {
             'company' => $values['company_id'],
             'department' => $values['department_id'],
+            default => null,
         };
         $config['include_departments'] = $values['include_departments'];
 
