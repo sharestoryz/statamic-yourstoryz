@@ -7,6 +7,7 @@ use Statamic\Facades\Blueprint;
 use Statamic\Facades\Collection;
 use Statamic\Facades\CP\Nav;
 use Statamic\Facades\Site;
+use Statamic\Facades\Taxonomy;
 use Statamic\Providers\AddonServiceProvider;
 use YourStoryz\StatamicYourStoryz\Jobs\GetStoriesJob;
 
@@ -20,6 +21,7 @@ class ServiceProvider extends AddonServiceProvider
     public function bootAddon(): void
     {
         $this
+            ->createTaxonomy()
             ->createCollection()
             ->createBlueprint();
 
@@ -38,6 +40,20 @@ class ServiceProvider extends AddonServiceProvider
             ->everyFifteenMinutes();
     }
 
+    protected function createTaxonomy(): self
+    {
+        if (Taxonomy::handleExists('categories')) {
+            return $this;
+        }
+
+        Taxonomy::make('categories')
+            ->title('Categories')
+            ->sites([Site::default()->handle()])
+            ->save();
+
+        return $this;
+    }
+
     protected function createCollection(): self
     {
         if (Collection::handleExists('stories')) {
@@ -50,6 +66,7 @@ class ServiceProvider extends AddonServiceProvider
             ->dated(true)
             ->defaultPublishState('draft')
             ->sites([Site::default()->handle()])
+            ->taxonomies(['categories'])
             ->save();
 
         return $this;
