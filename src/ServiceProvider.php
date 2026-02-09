@@ -74,6 +74,10 @@ class ServiceProvider extends AddonServiceProvider
 
     protected function createBlueprint(): self
     {
+        if (Blueprint::find('story')) {
+            return $this;
+        }
+
         Blueprint::make('story')
             ->setNamespace('collections.stories')
             ->setContents([
