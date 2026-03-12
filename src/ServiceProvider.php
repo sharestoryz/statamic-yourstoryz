@@ -9,13 +9,15 @@ use Statamic\Facades\CP\Nav;
 use Statamic\Facades\Site;
 use Statamic\Facades\Taxonomy;
 use Statamic\Providers\AddonServiceProvider;
+use YourStoryz\StatamicYourStoryz\Fieldtypes\YourStoryzCompany;
+use YourStoryz\StatamicYourStoryz\Fieldtypes\YourStoryzDepartment;
 use YourStoryz\StatamicYourStoryz\Jobs\GetStoriesJob;
 
 class ServiceProvider extends AddonServiceProvider
 {
     protected $fieldtypes = [
-        \YourStoryz\StatamicYourStoryz\Fieldtypes\YourStoryzCompany::class,
-        \YourStoryz\StatamicYourStoryz\Fieldtypes\YourStoryzDepartment::class,
+        YourStoryzCompany::class,
+        YourStoryzDepartment::class,
     ];
 
     public function bootAddon(): void
