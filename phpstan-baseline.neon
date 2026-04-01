@@ -37,6 +37,12 @@ parameters:
 			path: src/Jobs/ProcessMediaJob.php
 
 		-
+			message: '#^Call to an undefined method Statamic\\Contracts\\Entries\\QueryBuilder\:\:where\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Jobs/ProcessStoryJob.php
+
+		-
 			message: '#^Call to an undefined method Statamic\\Contracts\\Entries\\Entry\:\:collection\(\)\.$#'
 			identifier: method.notFound
 			count: 1
