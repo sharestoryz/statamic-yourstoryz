@@ -7,6 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Str;
 use Statamic\Facades\Entry;
+use Statamic\Facades\Site;
 
 class ProcessStoryJob implements ShouldQueue
 {
@@ -15,17 +16,35 @@ class ProcessStoryJob implements ShouldQueue
     public function __construct(
         private array $story,
         private array $data = []
-    ) {
-        //
-    }
+    ) {}
 
     public function handle(): void
     {
-        $title = Str::of($this->story['title']);
+        $existingEntry = Entry::query()
+            ->where('collection', 'stories')
+            ->where('reference_id', $this->story['id'])
+            ->first();
+
+        if ($existingEntry) {
+            return;
+        }
+
+        $locale = Str::before(Site::default()->locale(), '_');
+
+        $contents = collect($this->story['video']['contents'] ?? [])
+            ->where('lang', $locale);
+
+        $matched = $contents->firstWhere('type', 'news')
+            ?? $contents->firstWhere('type', 'social');
+
+        $title = $matched['title'] ?? $this->story['title'];
+        $content = $matched['content'] ?? $this->story['description'];
+
+        $title = Str::of($title);
 
         $data = array_merge([
             'title' => $title->toString(),
-            'content' => $this->story['description'],
+            'content' => $content,
             'author' => $this->story['author']['name'],
             'reference_id' => $this->story['id'],
         ], $this->data);
