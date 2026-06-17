@@ -18,7 +18,7 @@
     "require": {
         "php": "^8.3",
         "illuminate/contracts": "^11.0||^12.0",
-        "sharestoryz/laravel-yourstoryz": "^0.0",
+        "sharestoryz/laravel-yourstoryz": "^1.0",
         "statamic/cms": "^5.0"
     },
     "require-dev": {
