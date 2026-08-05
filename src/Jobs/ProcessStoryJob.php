@@ -45,7 +45,7 @@ class ProcessStoryJob implements ShouldQueue
         $data = array_merge([
             'title' => $title->toString(),
             'content' => $content,
-            'author' => $this->story['author']['name'],
+            'author' => data_get($this->story, 'author.name'),
             'reference_id' => $this->story['id'],
         ], $this->data);
 
